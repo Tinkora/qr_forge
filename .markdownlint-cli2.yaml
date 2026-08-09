@@ -1,0 +1,14 @@
+config:
+  MD013: false
+  MD060:
+    style: any
+
+ignores:
+  - .playwright-cli/**
+  - output/**
+  - target/**
+  - crates/qr_forge_web/node_modules/**
+  - crates/qr_forge_web/pkg/**
+  - crates/qr_forge_web/static/pkg/**
+  - crates/qr_forge_web/playwright-report/**
+  - crates/qr_forge_web/test-results/**

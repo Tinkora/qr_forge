@@ -1,0 +1,23 @@
+[package]
+name = "qr_forge_core"
+version = "0.1.0"
+description = "QR code and barcode generation and rendering for qr_forge"
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+qrcode.workspace = true
+barcoders.workspace = true
+image.workspace = true
+wasm-bindgen.workspace = true
+js-sys.workspace = true
+console_error_panic_hook.workspace = true
+
+[dev-dependencies]
+rxing.workspace = true

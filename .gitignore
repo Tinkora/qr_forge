@@ -1,0 +1,9 @@
+/target
+/pkg
+**/pkg/
+/output/
+/.playwright-cli/
+/dist/
+crates/qr_forge_web/node_modules/
+crates/qr_forge_web/playwright-report/
+crates/qr_forge_web/test-results/

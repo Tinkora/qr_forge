@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Create QR codes, Code 128 barcodes, and EAN-13 barcodes locally in your browser.">
+  <meta name="referrer" content="no-referrer">
+  <meta name="color-scheme" content="dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>QR Forge | Local QR and Barcode Generator</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./app.css">
+</head>
+<body>
+  <a class="skip-link" href="#workspace" data-i18n="skipToWorkspace">Skip to workspace</a>
+
+  <!-- Paths are from Lucide, distributed under the ISC License. -->
+  <svg class="icon-sprite" aria-hidden="true">
+    <symbol id="icon-qr-code" viewBox="0 0 24 24">
+      <rect width="5" height="5" x="3" y="3" rx="1"></rect>
+      <rect width="5" height="5" x="16" y="3" rx="1"></rect>
+      <rect width="5" height="5" x="3" y="16" rx="1"></rect>
+      <path d="M21 16h-3a2 2 0 0 0-2 2v3"></path>
+      <path d="M21 21v.01"></path>
+      <path d="M12 7v3a2 2 0 0 1-2 2H7"></path>
+      <path d="M3 12h.01"></path>
+      <path d="M12 3h.01"></path>
+      <path d="M12 16v.01"></path>
+      <path d="M16 12h1"></path>
+      <path d="M21 12v.01"></path>
+      <path d="M12 21v-1"></path>
+    </symbol>
+    <symbol id="icon-barcode" viewBox="0 0 24 24">
+      <path d="M3 5v14"></path><path d="M8 5v14"></path><path d="M12 5v14"></path>
+      <path d="M17 5v14"></path><path d="M21 5v14"></path>
+    </symbol>
+    <symbol id="icon-refresh-cw" viewBox="0 0 24 24">
+      <path d="M21 12a9 9 0 0 0-15-6.7L3 8"></path><path d="M3 3v5h5"></path>
+      <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path><path d="M21 21v-5h-5"></path>
+    </symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24">
+      <path d="M12 15V3"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path>
+    </symbol>
+    <symbol id="icon-languages" viewBox="0 0 24 24">
+      <path d="m5 8 6 6"></path><path d="m4 14 6-6 2-3"></path><path d="M2 5h12"></path>
+      <path d="M7 2h1"></path><path d="m22 22-5-10-5 10"></path><path d="M14 18h6"></path>
+    </symbol>
+    <symbol id="icon-github" viewBox="0 0 24 24">
+      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7A5.4 5.4 0 0 0 19.4 4 5 5 0 0 0 19.3.5S18.2.1 15 1.8a13.4 13.4 0 0 0-7 0C4.8.1 3.7.5 3.7.5A5 5 0 0 0 3.6 4a5.4 5.4 0 0 0-1.4 3.7c0 5.4 3.5 6.6 6.8 7A4.8 4.8 0 0 0 8 18v4"></path>
+      <path d="M8 19c-3 .9-3-1.5-4-2"></path>
+    </symbol>
+    <symbol id="icon-shield-check" viewBox="0 0 24 24">
+      <path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"></path>
+      <path d="m9 12 2 2 4-4"></path>
+    </symbol>
+    <symbol id="icon-image" viewBox="0 0 24 24">
+      <rect width="18" height="18" x="3" y="3" rx="2"></rect><circle cx="9" cy="9" r="2"></circle>
+      <path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"></path>
+    </symbol>
+    <symbol id="icon-eye" viewBox="0 0 24 24">
+      <path d="M2.1 12a10 10 0 0 1 19.8 0 10 10 0 0 1-19.8 0"></path><circle cx="12" cy="12" r="3"></circle>
+    </symbol>
+    <symbol id="icon-eye-off" viewBox="0 0 24 24">
+      <path d="m2 2 20 20"></path><path d="M6.7 6.7A10.8 10.8 0 0 0 2.1 12a10 10 0 0 0 15.2 5.3"></path>
+      <path d="M10.7 10.7a2 2 0 0 0 2.6 2.6"></path><path d="M9.9 4.2A10.6 10.6 0 0 1 21.9 12a10.5 10.5 0 0 1-2.2 3.3"></path>
+    </symbol>
+    <symbol id="icon-x" viewBox="0 0 24 24">
+      <path d="M18 6 6 18"></path><path d="m6 6 12 12"></path>
+    </symbol>
+  </svg>
+
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="QR Forge">
+      <span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#icon-qr-code"></use></svg></span>
+      <span class="brand-name">QR Forge</span>
+      <span class="build-badge">WASM</span>
+    </a>
+    <div class="topbar-actions">
+      <span class="privacy-state">
+        <svg class="icon" aria-hidden="true"><use href="#icon-shield-check"></use></svg>
+        <span data-i18n="localOnly">Local only</span>
+      </span>
+      <a class="icon-button" href="https://github.com/Tinkora/qr_forge" aria-label="GitHub" title="GitHub">
+        <svg class="icon" aria-hidden="true"><use href="#icon-github"></use></svg>
+      </a>
+      <button class="language-button" id="language-toggle" type="button">
+        <svg class="icon" aria-hidden="true"><use href="#icon-languages"></use></svg>
+        <span id="language-toggle-label">中文</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="workspace" id="workspace">
+    <section class="controls" aria-labelledby="controls-title">
+      <header class="panel-header">
+        <div>
+          <p class="eyebrow" data-i18n="generatorEyebrow">Generator</p>
+          <h1 id="controls-title" data-i18n="controlsTitle">Create code</h1>
+        </div>
+        <span class="mode-summary" id="mode-summary">QR</span>
+      </header>
+
+      <form id="generator-form" novalidate>
+        <div class="controls-body">
+          <fieldset class="form-section mode-section">
+            <legend data-i18n="modeLegend">Type</legend>
+            <div class="mode-tabs" id="tab-bar" role="tablist" aria-label="Code type" data-i18n-aria-label="modeLegend">
+              <button class="mode-tab is-active" id="tab-qr-url" type="button" role="tab" aria-selected="true" aria-controls="group-qr-url" tabindex="0" data-mode="qr-url" data-i18n="modeText">URL / Text</button>
+              <button class="mode-tab" id="tab-qr-wifi" type="button" role="tab" aria-selected="false" aria-controls="group-qr-wifi" tabindex="-1" data-mode="qr-wifi" data-i18n="modeWifi">Wi-Fi</button>
+              <button class="mode-tab" id="tab-qr-vcard" type="button" role="tab" aria-selected="false" aria-controls="group-qr-vcard" tabindex="-1" data-mode="qr-vcard" data-i18n="modeVcard">vCard</button>
+              <button class="mode-tab" id="tab-qr-phone" type="button" role="tab" aria-selected="false" aria-controls="group-qr-phone" tabindex="-1" data-mode="qr-phone" data-i18n="modePhone">Phone</button>
+              <button class="mode-tab" id="tab-qr-email" type="button" role="tab" aria-selected="false" aria-controls="group-qr-email" tabindex="-1" data-mode="qr-email" data-i18n="modeEmail">Email</button>
+              <button class="mode-tab" id="tab-barcode" type="button" role="tab" aria-selected="false" aria-controls="group-barcode" tabindex="-1" data-mode="barcode" data-i18n="modeBarcode">Barcode</button>
+            </div>
+          </fieldset>
+
+          <section class="mode-panel" id="group-qr-url" role="tabpanel" aria-labelledby="tab-qr-url">
+            <div class="field">
+              <label for="qr-url-input" data-i18n="contentLabel">Content</label>
+              <textarea id="qr-url-input" rows="3" data-i18n-placeholder="contentPlaceholder">https://tinkora.github.io/qr_forge/</textarea>
+            </div>
+          </section>
+
+          <section class="mode-panel" id="group-qr-wifi" role="tabpanel" aria-labelledby="tab-qr-wifi" hidden>
+            <div class="field">
+              <label for="wifi-ssid" data-i18n="ssidLabel">Network name</label>
+              <input id="wifi-ssid" type="text" maxlength="32" autocomplete="off" data-i18n-placeholder="ssidPlaceholder">
+            </div>
+            <div class="field">
+              <label for="wifi-password" data-i18n="passwordLabel">Password</label>
+              <div class="input-with-action">
+                <input id="wifi-password" type="password" maxlength="64" autocomplete="new-password" data-i18n-placeholder="passwordPlaceholder">
+                <button class="field-icon-button" id="password-toggle" type="button">
+                  <svg class="icon" aria-hidden="true"><use id="password-toggle-icon" href="#icon-eye"></use></svg>
+                </button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="wifi-encryption" data-i18n="encryptionLabel">Security</label>
+              <select id="wifi-encryption">
+                <option value="WPA">WPA / WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass" data-i18n="openNetwork">Open network</option>
+              </select>
+            </div>
+          </section>
+
+          <section class="mode-panel" id="group-qr-vcard" role="tabpanel" aria-labelledby="tab-qr-vcard" hidden>
+            <div class="field">
+              <label for="vcard-name" data-i18n="nameLabel">Name *</label>
+              <input id="vcard-name" type="text" maxlength="100" autocomplete="name" required data-i18n-placeholder="namePlaceholder">
+            </div>
+            <div class="two-column-fields">
+              <div class="field">
+                <label for="vcard-phone" data-i18n="phoneLabel">Phone</label>
+                <input id="vcard-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+1 555 0100">
+              </div>
+              <div class="field">
+                <label for="vcard-email" data-i18n="emailLabel">Email</label>
+                <input id="vcard-email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com">
+              </div>
+            </div>
+            <div class="field">
+              <label for="vcard-org" data-i18n="organizationLabel">Organization</label>
+              <input id="vcard-org" type="text" autocomplete="organization" data-i18n-placeholder="organizationPlaceholder">
+            </div>
+          </section>
+
+          <section class="mode-panel" id="group-qr-phone" role="tabpanel" aria-labelledby="tab-qr-phone" hidden>
+            <div class="field">
+              <label for="phone-number" data-i18n="phoneNumberLabel">Phone number</label>
+              <input id="phone-number" type="tel" inputmode="tel" autocomplete="tel" placeholder="+1 555 0100">
+            </div>
+          </section>
+
+          <section class="mode-panel" id="group-qr-email" role="tabpanel" aria-labelledby="tab-qr-email" hidden>
+            <div class="field">
+              <label for="email-address" data-i18n="emailAddressLabel">Email address</label>
+              <input id="email-address" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com">
+            </div>
+          </section>
+
+          <section class="mode-panel" id="group-barcode" role="tabpanel" aria-labelledby="tab-barcode" hidden>
+            <div class="field">
+              <label for="barcode-type" data-i18n="barcodeTypeLabel">Barcode type</label>
+              <select id="barcode-type">
+                <option value="code128">Code 128</option>
+                <option value="ean13" data-i18n="eanOption">EAN-13 (12 digits)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="barcode-input" data-i18n="barcodeContentLabel">Barcode data</label>
+              <input id="barcode-input" type="text" maxlength="128" value="TINKORA-128" data-i18n-placeholder="barcodeContentPlaceholder">
+            </div>
+            <div class="two-column-fields">
+              <div class="field">
+                <label for="barcode-height" data-i18n="heightLabel">Height (px)</label>
+                <input id="barcode-height" type="number" value="120" min="20" max="2000" inputmode="numeric">
+              </div>
+              <div class="field">
+                <label for="barcode-module-width" data-i18n="moduleWidthLabel">Module (px)</label>
+                <input id="barcode-module-width" type="number" value="2" min="1" max="16" inputmode="numeric">
+              </div>
+            </div>
+          </section>
+
+          <fieldset class="form-section" id="qr-options">
+            <legend data-i18n="appearanceLegend">Appearance</legend>
+            <div class="three-column-fields">
+              <div class="field compact-field">
+                <label for="ec-level" data-i18n="errorCorrectionLabel">Correction</label>
+                <select id="ec-level">
+                  <option value="L">L · 7%</option><option value="M">M · 15%</option>
+                  <option value="Q">Q · 25%</option><option value="H" selected>H · 30%</option>
+                </select>
+              </div>
+              <div class="field compact-field">
+                <label for="module-size" data-i18n="moduleSizeLabel">Module</label>
+                <input id="module-size" type="number" value="8" min="1" max="32" inputmode="numeric">
+              </div>
+              <div class="field compact-field">
+                <label for="margin" data-i18n="marginLabel">Margin</label>
+                <input id="margin" type="number" value="4" min="0" max="16" inputmode="numeric">
+              </div>
+            </div>
+            <div class="color-fields">
+              <div class="field color-field">
+                <label for="fg-color" data-i18n="foregroundLabel">Foreground</label>
+                <div class="color-control"><input id="fg-color" type="color" value="#111111"><output id="fg-value" for="fg-color">#111111</output></div>
+              </div>
+              <div class="field color-field">
+                <label for="bg-color" data-i18n="backgroundLabel">Background</label>
+                <div class="color-control"><input id="bg-color" type="color" value="#FFFFFF"><output id="bg-value" for="bg-color">#FFFFFF</output></div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section" id="logo-options">
+            <legend data-i18n="logoLegend">Logo</legend>
+            <div class="logo-upload-row">
+              <input class="visually-hidden" id="logo-file" type="file" accept="image/png">
+              <label class="file-trigger" for="logo-file">
+                <svg class="icon" aria-hidden="true"><use href="#icon-image"></use></svg>
+                <span data-i18n="choosePng">Choose PNG</span>
+              </label>
+              <span class="file-name" id="logo-file-name" data-i18n="noFile">No file</span>
+              <button class="clear-file-button" id="clear-logo" type="button" hidden>
+                <svg class="icon" aria-hidden="true"><use href="#icon-x"></use></svg>
+                <span data-i18n="removeLogo">Remove</span>
+              </button>
+            </div>
+            <div class="range-field">
+              <label for="logo-ratio" data-i18n="logoRatioLabel">Size</label>
+              <input id="logo-ratio" type="range" value="20" min="5" max="30" step="1">
+              <output id="logo-ratio-label" for="logo-ratio">20%</output>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="generate-row">
+          <button class="button primary-button" id="btn-generate" type="submit">
+            <svg class="icon" aria-hidden="true"><use href="#icon-refresh-cw"></use></svg>
+            <span data-i18n="generateButton">Generate</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section class="preview-pane" aria-labelledby="preview-title">
+      <header class="preview-header">
+        <div>
+          <p class="eyebrow" data-i18n="previewEyebrow">Output</p>
+          <h2 id="preview-title" data-i18n="previewTitle">Preview</h2>
+        </div>
+        <output class="dimensions" id="dimensions">—</output>
+      </header>
+
+      <div class="preview-stage" id="preview-stage" aria-busy="false">
+        <div class="preview-surface qr-surface" id="qr-container" hidden><div id="qr-display"></div></div>
+        <div class="preview-surface barcode-surface" id="barcode-preview" hidden>
+          <div id="barcode-display"></div>
+          <div class="barcode-text" id="barcode-text-display"></div>
+        </div>
+        <div class="empty-state" id="empty-state">
+          <svg class="empty-icon" aria-hidden="true"><use href="#icon-qr-code"></use></svg>
+          <p data-i18n="noPreview">No preview</p>
+        </div>
+      </div>
+
+      <footer class="export-bar">
+        <p class="status-message" id="status" role="status" aria-live="polite"></p>
+        <div class="export-actions">
+          <button class="button secondary-button" id="btn-download-svg" type="button" disabled>
+            <svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg>
+            <span data-i18n="downloadSvg">SVG</span>
+          </button>
+          <button class="button secondary-button" id="btn-download-png" type="button" disabled>
+            <svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg>
+            <span data-i18n="downloadPng">PNG</span>
+          </button>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <noscript>This application requires JavaScript and WebAssembly.</noscript>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
