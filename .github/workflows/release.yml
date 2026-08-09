@@ -167,12 +167,12 @@ jobs:
         run: cd release-candidate && sha256sum --check --strict SHA256SUMS
 
       - name: Attest build provenance
-        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-path: release-candidate/qr_forge-web-v${{ needs.validate.outputs.version }}.tar.gz
 
       - name: Attest SBOM
-        uses: actions/attest-sbom@4651f806c01d8637787e274ac3bdf724ef169f34 # v3
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-path: release-candidate/qr_forge-web-v${{ needs.validate.outputs.version }}.tar.gz
           sbom-path: release-candidate/SBOM.spdx.json
