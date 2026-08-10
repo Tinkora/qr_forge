@@ -247,6 +247,22 @@ jobs:
           (cd release-candidate && sha256sum --check --strict SHA256SUMS)
           mapfile -d '' assets < <(find release-candidate -maxdepth 1 -type f -print0 | LC_ALL=C sort -z)
           [[ "${#assets[@]}" == "4" ]] || { echo "unexpected release asset count" >&2; exit 1; }
-          gh release create "$TAG" "${assets[@]}" --draft --notes-file release-notes/release-notes.md \
-            --title "$TAG" --verify-tag
-          gh release edit "$TAG" --draft=false
+          release_id="$(gh api \
+            --method POST \
+            "repos/${GH_REPO}/releases" \
+            -f tag_name="$TAG" \
+            -f target_commitish="$GITHUB_SHA" \
+            -f name="$TAG" \
+            -f body="$(cat release-notes/release-notes.md)" \
+            -F draft=true \
+            -F prerelease=false \
+            --jq '.id')"
+          release_json="$(gh api "repos/${GH_REPO}/releases/${release_id}")"
+          test "$(jq -r '.tag_name' <<< "$release_json")" = "$TAG"
+          test "$(jq -r '.draft' <<< "$release_json")" = true
+          gh release upload "$TAG" "${assets[@]}"
+          gh api \
+            --method PATCH \
+            "repos/${GH_REPO}/releases/${release_id}" \
+            -F draft=false \
+            --jq '.draft' | grep -qx false
