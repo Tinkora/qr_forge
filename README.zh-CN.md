@@ -7,6 +7,8 @@
 [![Rust 1.85+](https://img.shields.io/badge/rust-1.85%2B-orange.svg)](https://www.rust-lang.org)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.zh-CN.md)
 
+[![在 Ko-fi 上支持 Tinkora](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/tinkora)
+
 qr_forge 是一个在浏览器本地生成二维码、Code 128 条形码和 EAN-13 条形码的工具。它使用 Rust 和 WebAssembly 输出 SVG 与 PNG 文件，不会把待编码内容发送到应用服务器。
 
 [打开在线应用](https://tinkora.github.io/qr_forge/)

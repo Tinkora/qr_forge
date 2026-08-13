@@ -7,6 +7,8 @@
 [![Rust 1.85+](https://img.shields.io/badge/rust-1.85%2B-orange.svg)](https://www.rust-lang.org)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
+[![Support Tinkora on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/tinkora)
+
 qr_forge creates QR codes, Code 128 barcodes, and EAN-13 barcodes locally in a browser. It uses Rust and WebAssembly to produce SVG and PNG files without sending the content being encoded to an application server.
 
 [Open the web app](https://tinkora.github.io/qr_forge/)
